@@ -7,11 +7,11 @@ import outputer
 class Reddit(object):
 
     def __init__(self):
-        self.url = 'https://www.reddit.com/r/gifs/?count='
+        self.url = 'https://www.reddit.com/r/ass/?count='
         self.page = 0
         self.downloader = downloader.Downloader()
         self.parser = parser.Parser()
-        self.outputer = outputer.Outputer()
+        # self.outputer = outputer.Outputer()
 
     def crawl(self):
         page = self.page
@@ -19,7 +19,7 @@ class Reddit(object):
         print 'Mission Begin #' + url
         html = self.downloader.download(url)
         srcs = self.parser.parse(html)
-        self.outputer.output(str(page), srcs)
+        # self.outputer.output(str(page), srcs)
         print 'Mission Completed'
         return
 
