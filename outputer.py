@@ -2,30 +2,44 @@
 
 import urllib
 import os
+import re
 
 class Outputer(object):
-    
-    def output(self, path, items):
-        self.mkdir(path)
-        for item in items:
-            print 'downloading #' + item
-            self.save(path, item)
+    def __init__(self):
+        self.image = set([])
+        self.video = set([])
 
-    def mkdir(self, path):
-        isExist = os.path.exists(path)
-        if not isExist:
-            print '######新建文件夹%s' %path
-            os.makedirs(path)
-        else:
-            print '######文件夹%s已存在'
+    def output(self, srcs):
+        self.classify(srcs)
+        self.saveImage(self.image)
+        self.saveVideo(self.video)
         return
 
-    def save(self, path, src):
-        name = src.split('/')[-1]
-        try:
-            data = urllib.urlopen(src).read()
-        except Exception as e:
-            print 'error#' + src
-        with open(path + '/' + name, 'wb') as f:
-            f.write(data)
+    def classify(self, srcs):
+        for src in srcs:
+            suffix = src.split('/')[-1]
+            isImage = re.search(r'\.', suffix)
+            if isImage:
+                self.image.add(src)
+            else:
+                self.video.add(src)
+        return
+
+    def saveImage(self, srcs):
+        with open('image.txt', 'a') as f:
+            for src in srcs:
+                f.write(src + '\n')
+        return
+
+    def saveVideo(self, srcs):
+        with open('video.txt', 'a') as f:
+            for src in srcs:
+                f.write(src + '\n')
+        return
+
+    def classifyVideo(self, src):
+        return
+
+    def gfycat(self, src):
+        return
 

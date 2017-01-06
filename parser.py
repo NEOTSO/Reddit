@@ -6,11 +6,13 @@ class Parser(object):
     
     def parse(self, html):
         pattern = re.compile('<div class=" thing.*?link ".*?class="thumbnail.*?href="(.*?)".*?clearleft', re.S)
+        pattern2 = re.compile('<span class="next-button"><a href="(.*?)" rel="nofollow next" >')
         items = re.findall(pattern, html)
-        content = [] 
+        if re.findall(pattern2, html):
+            nextPage = re.findall(pattern2, html)[0]    #nextPage url
+        else:
+            nextPage = None
+        srcs = set([])    #use python set type to avoid duplicate url
         for item in items:
-            with open('src.txt', 'a') as f:
-                f.write(item + '\n')
-                # content.append(img)
-
-        return content
+            srcs.add(item)
+        return srcs, nextPage
